@@ -32,4 +32,22 @@ cd LibraryAPI
 }
 ```
 ![POST - http://localhost:8080/api/books](/images/addBook.png)
-
+2. Get All books:
+![GET - http://localhost:8080/api/books](/images/getAllBooks.png)
+3. Get Book by ID
+![Get - http://localhost:8080/api/books/1](/images/getBookById.png)
+4. Delete Book by ID
+![DELETE - http://localhost:8080/api/books/4](/images/delete.png)
+5. Update availability
+```bash
+{
+  "available": false
+}
+```
+![PATCH - http://localhost:8080/api/books/3/availability](/images/availability1.png)
+```bash
+{
+  "available": true
+}
+```
+![PATCH - http://localhost:8080/api/books/3/availability](/images/availability.png)
