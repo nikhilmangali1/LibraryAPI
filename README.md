@@ -44,7 +44,7 @@ cd LibraryAPI
   "available": false
 }
 ```
-![PATCH - http://localhost:8080/api/books/3/availability](/images/availability1.png)
+![PATCH - http://localhost:8080/api/books/3/availability](/images/availability.png)
 ```bash
 {
   "available": true
