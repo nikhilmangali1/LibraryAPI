@@ -31,5 +31,5 @@ cd LibraryAPI
   "available": true
 }
 ```
-![POST - http://localhost:8080/api/books]()
+![POST - http://localhost:8080/api/books](/images/addBook.png)
 
