@@ -1,10 +1,25 @@
 package com.nikhilmangali1.LibraryAPI.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 public class Book {
+
+
     private Integer id;
+
+    @NotBlank(message = "Title cannot be blank")
     private String title;
+
+    @NotBlank(message = "Author cannot be empty")
     private String author;
+
+    @NotBlank(message = "ISBN cannot be empty")
+    @Pattern(regexp = "^[0-9]{13}$", message = "ISBN must be a 13-digit number")
     private String isbn;
+
+    @NotNull(message = "Availability status must be provided")
     private Boolean available;
 
     public Integer getId() {

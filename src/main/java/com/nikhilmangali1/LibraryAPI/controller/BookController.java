@@ -3,6 +3,7 @@ package com.nikhilmangali1.LibraryAPI.controller;
 import com.nikhilmangali1.LibraryAPI.dto.AvailabilityUpdateRequest;
 import com.nikhilmangali1.LibraryAPI.model.Book;
 import com.nikhilmangali1.LibraryAPI.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> addBook(@RequestBody Book book){
+    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book){
         if(book.getTitle() == null || book.getTitle().trim().isBlank()) {
             return ResponseEntity.badRequest().build();
         }
