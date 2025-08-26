@@ -1,8 +1,10 @@
 package com.nikhilmangali1.LibraryAPI.service;
 
 import com.nikhilmangali1.LibraryAPI.model.Book;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.nikhilmangali1.LibraryAPI.repo.BookRepository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +28,8 @@ public class BookService {
     }
 
     public Optional<Book> getBookById(Integer id){
-        return bookRepository.findById(id);
+        return Optional.ofNullable(bookRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found")));
     }
 
     public boolean deleteBookById(Integer id){

@@ -36,9 +36,6 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Book>> getBookById(@PathVariable Integer id){
         Optional<Book> book = bookService.getBookById(id);
-        if(book == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(book);
     }
 
