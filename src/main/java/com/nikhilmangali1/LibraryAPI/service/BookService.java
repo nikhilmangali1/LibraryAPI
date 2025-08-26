@@ -1,6 +1,7 @@
 package com.nikhilmangali1.LibraryAPI.service;
 
 import com.nikhilmangali1.LibraryAPI.model.Book;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.nikhilmangali1.LibraryAPI.repo.BookRepository;
@@ -48,5 +49,11 @@ public class BookService {
             return bookRepository.save(book);
         }
         return null;
+    }
+
+    public List<Book> getAllBooksWithSortingByField(String field, String direction){
+        Sort sort = "asc".equalsIgnoreCase(direction) ?
+                Sort.by(Sort.Direction.ASC, field) : Sort.by(Sort.Direction.DESC, field);
+        return bookRepository.findAll(sort);
     }
 }

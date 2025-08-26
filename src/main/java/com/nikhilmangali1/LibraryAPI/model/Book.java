@@ -14,14 +14,13 @@ public class Book {
     private Integer id;
 
     @NotBlank(message = "Title cannot be blank")
-    @Column(nullable = false, length = 255)
     private String title;
 
     @NotBlank(message = "Author cannot be empty")
-    @Column(nullable = false)
     private String author;
 
     @NotBlank(message = "ISBN cannot be empty")
+    @Column(unique = true)
     @Pattern(regexp = "^[0-9]{13}$", message = "ISBN must be a 13-digit number")
     private String isbn;
 

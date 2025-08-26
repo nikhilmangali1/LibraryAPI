@@ -23,10 +23,10 @@ class LibraryIntegrationTest {
     @Autowired
     private BookRepository bookRepository;
 
-    @BeforeEach
-    void setup() {
-        bookRepository.deleteAll();
-    }
+//    @BeforeEach
+//    void setup() {
+//        bookRepository.deleteAll();
+//    }
 
     @Test
     void testAddAndGetBook() throws Exception {

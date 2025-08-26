@@ -64,6 +64,26 @@ public class BookController {
         return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/batch")
+    public ResponseEntity<List<Book>> addBooks(@Valid @RequestBody List<Book> books){
+        if(books == null || books.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        List<Book> savedBooks = books.stream()
+                .filter(book -> book.getTitle() != null && !book.getTitle().trim().isBlank())
+                .map(bookService::addBook)
+                .toList();
+
+        return ResponseEntity.ok(savedBooks);
+    }
+
+    @GetMapping("field/{field}")
+    public ResponseEntity<List<Book>> getAllBooksWithSortingByField(@PathVariable String field,
+                                                                    @RequestParam(defaultValue = "asc") String direction){
+        List<Book> sortedBooks = bookService.getAllBooksWithSortingByField(field, direction);
+        return ResponseEntity.ok(sortedBooks);
+    }
+
     @GetMapping("/test")
     public String testEndpoint() {
         return "LibraryAPI is running!";
