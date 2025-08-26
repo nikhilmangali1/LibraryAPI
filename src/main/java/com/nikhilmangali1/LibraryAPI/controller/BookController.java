@@ -6,6 +6,7 @@ import com.nikhilmangali1.LibraryAPI.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -82,6 +83,18 @@ public class BookController {
                                                                     @RequestParam(defaultValue = "asc") String direction){
         List<Book> sortedBooks = bookService.getAllBooksWithSortingByField(field, direction);
         return ResponseEntity.ok(sortedBooks);
+    }
+
+    @GetMapping("/pagination/{offset}/{pageSize}")
+    public ResponseEntity<Page<Book>> getBooksWithPagination(@PathVariable int offset, @PathVariable int pageSize){
+        Page<Book> booksWithPagination = bookService.getBooksWithPagination(offset,pageSize);
+        return ResponseEntity.ok(booksWithPagination);
+    }
+
+    @GetMapping("/paginationAndSorting/{offset}/{pageSize}/{field}")
+    public ResponseEntity<Page<Book>> getBooksWithPaginationAndSorting(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field){
+        Page<Book> booksWithPaginationAndSorting = bookService.getBooksWithPaginationAndSorting(offset,pageSize,field);
+        return ResponseEntity.ok(booksWithPaginationAndSorting);
     }
 
     @GetMapping("/test")

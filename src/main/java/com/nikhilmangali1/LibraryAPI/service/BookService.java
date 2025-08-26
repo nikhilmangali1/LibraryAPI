@@ -1,6 +1,8 @@
 package com.nikhilmangali1.LibraryAPI.service;
 
 import com.nikhilmangali1.LibraryAPI.model.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -55,5 +57,13 @@ public class BookService {
         Sort sort = "asc".equalsIgnoreCase(direction) ?
                 Sort.by(Sort.Direction.ASC, field) : Sort.by(Sort.Direction.DESC, field);
         return bookRepository.findAll(sort);
+    }
+
+    public Page<Book> getBooksWithPagination(int offset, int pageSize) {
+        return bookRepository.findAll(PageRequest.of(offset,pageSize));
+    }
+
+    public Page<Book> getBooksWithPaginationAndSorting(int offset, int pageSize, String field) {
+        return bookRepository.findAll(PageRequest.of(offset,pageSize).withSort(Sort.by(Sort.Direction.ASC, field)));
     }
 }
