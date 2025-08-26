@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.nikhilmangali1.LibraryAPI.repo.BookRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -24,15 +25,25 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Book getBookById(Integer id){
+    public Optional<Book> getBookById(Integer id){
         return bookRepository.findById(id);
     }
 
     public boolean deleteBookById(Integer id){
-        return bookRepository.deleteById(id);
+        if(bookRepository.existsById(id)){
+            bookRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     public Book updateAvailability(Integer id, boolean available){
-        return bookRepository.updateAvailability(id, available);
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        if(optionalBook.isPresent()){
+            Book book = optionalBook.get();
+            book.setAvailable(available);
+            return bookRepository.save(book);
+        }
+        return null;
     }
 }

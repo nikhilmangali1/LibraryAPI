@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -80,13 +81,12 @@ public class BookServiceTest {
         book.setId(1);
         book.setTitle("DSA");
 
-        when(bookRepository.findById(1)).thenReturn(book);
+        when(bookRepository.findById(1)).thenReturn(Optional.of(book));
 
-        Book found = bookService.getBookById(1);
+        Optional<Book> found = bookService.getBookById(1);
 
-        assertNotNull(found);
-        assertEquals(1,found.getId());
-        assertEquals("DSA",found.getTitle());
+        assertEquals(1,found.get().getId());
+        assertEquals("DSA",found.get().getTitle());
         verify(bookRepository,times(1)).findById(1);
     }
 
@@ -95,7 +95,7 @@ public class BookServiceTest {
     void getBookByIdShouldReturnNullIfNotExists(){
         when(bookRepository.findById(99)).thenReturn(null);
 
-        Book found = bookService.getBookById(99);
+        Optional<Book> found = bookService.getBookById(99);
 
         assertNull(found);
         verify(bookRepository,times(1)).findById(99);
@@ -105,48 +105,55 @@ public class BookServiceTest {
     // delete book by id
     @Test
     void deleteBookByIdShouldReturnTrueIfBookExists(){
-        when(bookRepository.deleteById(1)).thenReturn(true);
+        when(bookRepository.existsById(1)).thenReturn(true);
 
         boolean result = bookService.deleteBookById(1);
 
         assertTrue(result);
+        verify(bookRepository, times(1)).existsById(1);
         verify(bookRepository, times(1)).deleteById(1);
     }
 
     @Test
-    void deleteBookByIdShouldReturnFalseIfBookNotExists(){
-        when(bookRepository.deleteById(99)).thenReturn(false);
+    void deleteBookByIdShouldReturnFalseIfBookNotExists() {
+        when(bookRepository.existsById(99)).thenReturn(false);
 
         boolean result = bookService.deleteBookById(99);
 
         assertFalse(result);
-        verify(bookRepository, times(1)).deleteById(99);
+        verify(bookRepository, times(1)).existsById(99);
+        verify(bookRepository, never()).deleteById(any());
     }
 
 
     // update availability
     @Test
-    void updateAvailabilityShouldUpdateAndReturnBook(){
+    void updateAvailabilityShouldUpdateAndReturnBook() {
         Book book = new Book();
         book.setId(1);
         book.setAvailable(false);
 
-        when(bookRepository.updateAvailability(1,true)).thenReturn(book);
+        when(bookRepository.findById(1)).thenReturn(Optional.of(book));
+        when(bookRepository.save(any(Book.class))).thenReturn(book);
 
         Book updated = bookService.updateAvailability(1, true);
 
         assertNotNull(updated);
         assertEquals(1, updated.getId());
-        verify(bookRepository, times(1)).updateAvailability(1, true);
+        assertTrue(updated.getAvailable());
+        verify(bookRepository, times(1)).findById(1);
+        verify(bookRepository, times(1)).save(book);
     }
 
     @Test
-    void updateAvailabilityShouldReturnNullIfBookNotExists(){
-        when(bookRepository.updateAvailability(99, true)).thenReturn(null);
+    void updateAvailabilityShouldReturnNullIfBookNotExists() {
+        when(bookRepository.findById(99)).thenReturn(Optional.empty());
 
         Book updated = bookService.updateAvailability(99, true);
 
         assertNull(updated);
-        verify(bookRepository, times(1)).updateAvailability(99, true);
+        verify(bookRepository, times(1)).findById(99);
+        verify(bookRepository, never()).save(any());
     }
+
 }

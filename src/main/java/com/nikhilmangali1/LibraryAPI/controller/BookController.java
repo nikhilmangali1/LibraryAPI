@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
@@ -33,8 +34,8 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable Integer id){
-        Book book = bookService.getBookById(id);
+    public ResponseEntity<Optional<Book>> getBookById(@PathVariable Integer id){
+        Optional<Book> book = bookService.getBookById(id);
         if(book == null) {
             return ResponseEntity.notFound().build();
         }
@@ -43,7 +44,8 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBookById(@PathVariable Integer id) {
-        if(bookService.deleteBookById(id)) {
+        boolean deleted = bookService.deleteBookById(id);
+        if (deleted) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();

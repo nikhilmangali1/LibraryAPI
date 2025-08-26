@@ -1,18 +1,24 @@
 package com.nikhilmangali1.LibraryAPI.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+@Entity
 public class Book {
 
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotBlank(message = "Title cannot be blank")
+    @Column(nullable = false, length = 255)
     private String title;
 
     @NotBlank(message = "Author cannot be empty")
+    @Column(nullable = false)
     private String author;
 
     @NotBlank(message = "ISBN cannot be empty")
@@ -20,7 +26,9 @@ public class Book {
     private String isbn;
 
     @NotNull(message = "Availability status must be provided")
-    private Boolean available;
+    private Boolean available = true;
+
+    public Book() {}
 
     public Integer getId() {
         return id;
