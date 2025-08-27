@@ -97,6 +97,38 @@ public class BookController {
         return ResponseEntity.ok(booksWithPaginationAndSorting);
     }
 
+    @GetMapping("/search/author")
+    public ResponseEntity<List<Book>> getBooksByAuthor(@RequestParam String author){
+        return ResponseEntity.ok().body(bookService.getBooksByAuthor(author));
+    }
+
+    @GetMapping("/search/title")
+    public ResponseEntity<List<Book>> getBookByTitle(@RequestParam String title){
+        return ResponseEntity.ok().body(bookService.getBookByTitle(title));
+    }
+
+    @GetMapping("/search/isbn/{isbn}")
+    public ResponseEntity<Book> getBookByIsbn(@PathVariable String isbn){
+        return ResponseEntity.ok().body(bookService.getBookByIsbn(isbn));
+    }
+
+    @GetMapping("/search/available/{available}")
+    public ResponseEntity<List<Book>> getBooksByAvailability(@PathVariable boolean available){
+        return ResponseEntity.ok().body(bookService.getBooksByAvailability(available));
+    }
+
+    @GetMapping("/search/title/keyword/{keyword}")
+    public ResponseEntity<List<Book>> getAllBooksWhereTitleContainingKeyword(@PathVariable String keyword){
+        return ResponseEntity.ok().body(bookService.getAllBooksWhereTitleContainingKeyword(keyword));
+    }
+
+    @GetMapping("/search/keyword")
+    public ResponseEntity<List<Book>> getBooksByKeyword(@RequestParam String keyword){
+        List<Book> books = bookService.getBooksByKeyword(keyword);
+        return ResponseEntity.ok().body(books);
+    }
+
+
     @GetMapping("/test")
     public String testEndpoint() {
         return "LibraryAPI is running!";

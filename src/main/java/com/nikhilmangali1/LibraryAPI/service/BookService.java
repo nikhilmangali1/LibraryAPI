@@ -66,4 +66,31 @@ public class BookService {
     public Page<Book> getBooksWithPaginationAndSorting(int offset, int pageSize, String field) {
         return bookRepository.findAll(PageRequest.of(offset,pageSize).withSort(Sort.by(Sort.Direction.ASC, field)));
     }
+
+    public List<Book> getBooksByAuthor(String author) {
+        return bookRepository.findByAuthor(author);
+    }
+
+    public List<Book> getBookByTitle(String title) {
+        return bookRepository.findByTitle(title);
+    }
+
+    public Book getBookByIsbn(String isbn) {
+        return bookRepository.getByIsbn(isbn);
+    }
+
+    public List<Book> getBooksByAvailability(boolean available) {
+        if(available){
+            return bookRepository.getByAvailableTrue();
+        }
+        return bookRepository.getByAvailableFalse();
+    }
+
+    public List<Book> getAllBooksWhereTitleContainingKeyword(String keyword) {
+        return bookRepository.getByTitleContaining(keyword);
+    }
+
+    public List<Book> getBooksByKeyword(String keyword) {
+        return bookRepository.searchByKeyword(keyword);
+    }
 }
